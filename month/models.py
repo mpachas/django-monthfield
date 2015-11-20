@@ -4,6 +4,26 @@ from month import widgets
 from month import Month
 import datetime
 
+
+# Patch python3 basestring
+# Credits @leingang
+# https://github.com/oxplot/fysom/issues/1
+
+try:
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    str = str
+    unicode = str
+    bytes = bytes
+    basestring = (str,bytes)
+else:
+    # 'unicode' exists, must be Python 2
+    str = str
+    unicode = unicode
+    bytes = str
+    basestring = basestring
+
 class MonthField(models.DateField):
     description = "A specific month of a specific year."
     widget = widgets.MonthSelectorWidget
