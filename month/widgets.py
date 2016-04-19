@@ -5,6 +5,27 @@ https://docs.djangoproject.com/en/1.8/ref/forms/widgets/#base-widget-classes
 from datetime import date
 from django.forms import widgets
 
+# Patch python3 basestring
+# Credits @leingang
+# https://github.com/oxplot/fysom/issues/1
+
+try:
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    str = str
+    unicode = str
+    bytes = bytes
+    basestring = (str,bytes)
+else:
+    # 'unicode' exists, must be Python 2
+    str = str
+    unicode = unicode
+    bytes = str
+    basestring = basestring
+
+# End Patch Again
+
 class MonthSelectorWidget(widgets.MultiWidget):
     def __init__(self, attrs=None):
         # create choices for days, months, years
